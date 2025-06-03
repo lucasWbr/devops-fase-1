@@ -1,77 +1,11 @@
 # DevOps na Prática - Fase 1
 
-Este projeto demonstra a integração entre GitHub e Amazon S3 para hospedagem de um site estático.
+Este projeto demonstra a implementação de um pipeline DevOps para hospedagem de um site estático na AWS, utilizando as seguintes tecnologias e práticas:
 
-## Configuração
-
-### 1. Configuração do Bucket S3
-
-1. Acesse o Console da AWS
-2. Crie um novo bucket S3:
-   - Nome: escolha um nome único
-   - Região: selecione a região mais próxima
-   - Desabilite "Block all public access"
-3. Configure o bucket para hospedagem de site estático:
-   - Vá para as propriedades do bucket
-   - Ative "Static website hosting"
-   - Configure `index.html` como documento índice
-   - Configure `404.html` como página de erro
-4. Adicione a seguinte política ao bucket (substitua `seu-bucket` pelo nome do seu bucket):
-
-```json
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "PublicReadGetObject",
-      "Effect": "Allow",
-      "Principal": "*",
-      "Action": "s3:GetObject",
-      "Resource": "arn:aws:s3:::seu-bucket/*"
-    }
-  ]
-}
-```
-
-### 2. Configuração do IAM
-
-1. Crie um novo usuário IAM para o GitHub Actions
-2. Anexe a seguinte política (substitua `seu-bucket` pelo nome do seu bucket):
-
-```json
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "s3:PutObject",
-        "s3:GetObject",
-        "s3:ListBucket",
-        "s3:DeleteObject"
-      ],
-      "Resource": ["arn:aws:s3:::seu-bucket", "arn:aws:s3:::seu-bucket/*"]
-    },
-    {
-      "Effect": "Allow",
-      "Action": ["cloudfront:CreateInvalidation"],
-      "Resource": "*"
-    }
-  ]
-}
-```
-
-3. Guarde as credenciais (Access Key ID e Secret Access Key)
-
-### 3. Configuração do GitHub
-
-1. No seu repositório, vá para Settings > Secrets and variables > Actions
-2. Adicione os seguintes secrets:
-   - `AWS_ACCESS_KEY_ID`: Access Key do usuário IAM
-   - `AWS_SECRET_ACCESS_KEY`: Secret Key do usuário IAM
-   - `AWS_REGION`: Região do seu bucket (ex: us-east-1)
-   - `S3_BUCKET`: Nome do seu bucket
-   - `CLOUDFRONT_DISTRIBUTION_ID`: (Opcional) ID da distribuição CloudFront, se estiver usando
+- Amazon S3 para hospedagem
+- GitHub Actions para CI/CD
+- Terraform para Infraestrutura como Código (IaC)
+- AWS IAM para gerenciamento de permissões
 
 ## Estrutura do Projeto
 
@@ -79,34 +13,67 @@ Este projeto demonstra a integração entre GitHub e Amazon S3 para hospedagem d
 .
 ├── .github/
 │   └── workflows/
-│       └── deploy-s3.yml
-├── index.html
-├── 404.html
-└── README.md
+│       └── deploy.yml      # Pipeline de CI/CD
+├── infrastructure/
+│   ├── main.tf            # Configuração principal do Terraform
+│   ├── variables.tf       # Variáveis do Terraform
+│   └── outputs.tf         # Outputs do Terraform
+├── website/
+│   ├── index.html         # Página inicial
+│   └── 404.html          # Página de erro 404
+└── README.md             # Este arquivo
 ```
 
-## Como Usar
+## Configuração
 
-1. Clone este repositório
-2. Configure os secrets no GitHub conforme instruções acima
-3. Faça push para a branch main
-4. O GitHub Actions irá fazer o deploy automaticamente para o S3
-5. Acesse seu site através do endpoint do S3 ou domínio personalizado
+1. **Preparação do Ambiente AWS**:
 
-## Desenvolvimento Local
+   - Configure suas credenciais AWS
+   - O bucket S3 `devops-fase-1` deve existir
 
-Para testar localmente, você pode usar qualquer servidor web simples. Por exemplo, com Python:
+2. **Configuração do GitHub**:
 
-```bash
-python -m http.server 8000
-```
+   - Adicione os seguintes secrets no seu repositório:
+     - `AWS_ACCESS_KEY_ID`: ID da chave de acesso do usuário IAM
+     - `AWS_SECRET_ACCESS_KEY`: Chave secreta do usuário IAM
 
-Então acesse `http://localhost:8000` no seu navegador.
+3. **Implantação da Infraestrutura**:
 
-## Contribuição
+   ```bash
+   cd infrastructure
+   terraform init
+   terraform apply
+   ```
 
-1. Faça um Fork do projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
-3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
-4. Push para a branch (`git push origin feature/AmazingFeature`)
-5. Abra um Pull Request
+4. **Deploy Manual (se necessário)**:
+   ```bash
+   aws s3 sync ./website s3://devops-fase-1 --delete
+   ```
+
+## URLs Importantes
+
+- Website: http://devops-fase-1.s3-website-us-east-1.amazonaws.com
+- Repositório: [URL do seu repositório]
+
+## Desenvolvimento
+
+Para contribuir com o projeto:
+
+1. Clone o repositório
+2. Crie uma branch para sua feature (`git checkout -b feature/nome-da-feature`)
+3. Faça commit das suas alterações (`git commit -am 'Adiciona nova feature'`)
+4. Push para a branch (`git push origin feature/nome-da-feature`)
+5. Crie um Pull Request
+
+## Segurança
+
+- O bucket S3 está configurado para acesso público apenas para leitura
+- O GitHub Actions utiliza um usuário IAM dedicado com permissões mínimas necessárias
+- As credenciais são armazenadas de forma segura nos secrets do GitHub
+
+## Próximos Passos
+
+- [ ] Adicionar CloudFront para CDN
+- [ ] Implementar HTTPS
+- [ ] Adicionar monitoramento e alertas
+- [ ] Implementar testes automatizados
