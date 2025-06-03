@@ -5,8 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
+    "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "validate": "html-validate ./*.html"
+    "validate": "html-validate website/*.html",
+    "validate:watch": "html-validate website/*.html --watch"
   },
   "keywords": [
     "devops",
