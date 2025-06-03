@@ -1,0 +1,23 @@
+{
+  "name": "devops-fase-1",
+  "version": "1.0.0",
+  "description": "DevOps na Prática - Fase 1",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "validate": "html-validate ./*.html"
+  },
+  "keywords": [
+    "devops",
+    "aws",
+    "terraform",
+    "ci-cd"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "html-validate": "^8.15.0"
+  }
+}
