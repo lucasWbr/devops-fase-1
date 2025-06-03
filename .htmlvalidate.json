@@ -1,0 +1,17 @@
+{
+  "extends": ["html-validate:recommended"],
+  "rules": {
+    "void-style": [
+      "error",
+      {
+        "style": "selfclosing"
+      }
+    ],
+    "attr-quotes": [
+      "error",
+      {
+        "style": "double"
+      }
+    ]
+  }
+}
