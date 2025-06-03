@@ -31,13 +31,32 @@
         color: #28a745;
         text-align: center;
         font-weight: bold;
+        margin-bottom: 30px;
+      }
+      .features {
+        list-style-type: none;
+        padding: 0;
+      }
+      .features li {
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+        color: #555;
+      }
+      .features li:last-child {
+        border-bottom: none;
       }
     </style>
   </head>
   <body>
     <div class="container">
       <h1>DevOps na Prática - Fase 1</h1>
-      <p class="success">✅ Deploy automático</p>
+      <p class="success">✅ Deploy automático configurado com sucesso!</p>
+      <ul class="features">
+        <li>🪣 Hospedagem no Amazon S3</li>
+        <li>🚀 Deploy automático via GitHub Actions</li>
+        <li>🏗️ Infraestrutura como Código com Terraform</li>
+        <li>🔄 Integração Contínua e Entrega Contínua (CI/CD)</li>
+      </ul>
     </div>
   </body>
 </html>
