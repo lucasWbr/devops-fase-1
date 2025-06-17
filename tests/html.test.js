@@ -41,6 +41,11 @@ describe("HTML Files Structure", () => {
       expect(websiteIndexHtml).toMatch(
         /Integração Contínua e Entrega Contínua \(CI\/CD\)/
       );
+      expect(websiteIndexHtml).toMatch(/Containerização com Docker/);
+      expect(websiteIndexHtml).toMatch(
+        /Pipeline de CI\/CD avançado com testes automatizados/
+      );
+      expect(websiteIndexHtml).toMatch(/Configuração nginx otimizada/);
     });
   });
 

@@ -1,0 +1,44 @@
+# Git
+.git
+.gitignore
+
+# Documentação
+README.md
+docs/
+
+# Dependencies
+node_modules/
+package-lock.json
+
+# Tests
+tests/
+*.test.js
+coverage/
+
+# Build artifacts
+dist/
+build/
+
+# Environment files
+.env
+.env.*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Terraform
+infrastructure/
+*.tf
+*.tfstate
+*.tfstate.*
+.terraform/
+
+# GitHub
+.github/ 
